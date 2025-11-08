@@ -1,5 +1,6 @@
-import sqlite3
 import functools
+import sqlite3
+
 
 def with_db_connection(func):
     @functools.wraps(func)
@@ -7,7 +8,8 @@ def with_db_connection(func):
         try:
             conn = sqlite3.connect('users.db')
             #print("Connection opened")
-            return func(conn=conn, user_id=kwargs["user_id"])
+            kwargs["conn"] = conn
+            return func(*args, **kwargs)
 
         finally:
             conn.close()
@@ -21,10 +23,7 @@ def get_user_by_id(conn, user_id):
     cursor.execute("SELECT * FROM users where id = ?", (user_id,))
     return cursor.fetchone()
 
-    ### Fetch user by ID with automatic connection handling
-
-    user = get_user_by_id(user_id=1)
-    print(user)
+### Fetch user by ID with automatic connection handling
 
 user = get_user_by_id(user_id=1)
 print(user)
