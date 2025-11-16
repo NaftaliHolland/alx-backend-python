@@ -62,6 +62,8 @@ REST_FRAMEWORK = {
     ]
 }
 
+AUTH_USER_MODEL = 'chats.User';
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
