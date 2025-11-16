@@ -11,7 +11,7 @@ class User(AbstractUser):
         ('admin', 'Admin'),
     ]
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    user_id = models.UUIDField(primary_key=True, default=uuid.uuid4)
 
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
@@ -24,15 +24,15 @@ class User(AbstractUser):
 
 
 class Message(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
-    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_messages')
+    message_id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    sender_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
+    recipient_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_messages')
     message_body = models.TextField()
     sent_at = models.DateTimeField(auto_now_add=True)
 
 
 class Conversation(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    participants = models.ManyToManyField(User, related_name='conversations')
+    conversation_id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    participants_id = models.ManyToManyField(User, related_name='conversations')
     created_at = models.DateTimeField(auto_now_add=True)
 
