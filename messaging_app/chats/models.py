@@ -17,6 +17,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=150)
 
     email = models.EmailField(unique=True, db_index=True)
+    password = AbstractUser._meta.get_field('password')
 
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
