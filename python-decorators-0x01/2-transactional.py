@@ -1,6 +1,20 @@
 import functools
 import sqlite3
 
+def with_db_connection(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            conn = sqlite3.connect('users.db')
+            #print("Connection opened")
+            kwargs["conn"] = conn
+            return func(*args, **kwargs)
+
+        finally:
+            conn.close()
+            #print("Connection closed")
+
+    return wrapper
 
 def transactional(func):
     @functools.wraps(func)
@@ -18,20 +32,6 @@ def transactional(func):
 
     return wrapper
 
-def with_db_connection(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            conn = sqlite3.connect('users.db')
-            #print("Connection opened")
-            kwargs["conn"] = conn
-            return func(*args, **kwargs)
-
-        finally:
-            conn.close()
-            #print("Connection closed")
-
-    return wrapper
 
 @with_db_connection
 @transactional
