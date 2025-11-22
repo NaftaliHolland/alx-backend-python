@@ -2,23 +2,6 @@ from rest_framework import serializers
 
 from .models import Conversation, Message, User
 
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = [
-            'user_id',
-            'first_name',
-            'last_name',
-            'email',
-            'phone_number',
-            'role',
-            'created_at',
-        ]
-
-        read_only_fields = ['user_id', 'created_at']
-
-
 # TODO: Add nested serailizer for sender and recepient: Maybe
 
 class MessageSerializer(serializers.ModelSerializer):

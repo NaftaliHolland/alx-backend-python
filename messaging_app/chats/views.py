@@ -6,24 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import status
 
 from .models import Conversation, Message
-from .serializers import (ConversationSerializer, MessageSerializer,
-                          UserSerializer)
-
-
-class UserViewSet(viewsets.ViewSet):
-    """
-    User ViewSet
-    """
-
-    permission_classes = [AllowAny]
-
-    def create(self, request):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+from .serializers import ConversationSerializer, MessageSerializer
 
 
 class ConversationViewSet(viewsets.ViewSet):
@@ -33,7 +16,7 @@ class ConversationViewSet(viewsets.ViewSet):
 
     permission_classes = [AllowAny]
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['conversation_id']
+    filterset_fields = ["conversation_id"]
 
     def list(self, request):
         queryset = Conversation.objects.all()
@@ -58,7 +41,7 @@ class MessageViewSet(viewsets.ViewSet):
 
     permission_classes = [AllowAny]
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['message_id', 'sender_id', 'message_body']
+    filterset_fields = ["message_id", "sender_id", "message_body"]
 
     def list(self, request):
         queryset = Message.objects.all()
