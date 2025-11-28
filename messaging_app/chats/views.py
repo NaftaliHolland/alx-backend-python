@@ -1,4 +1,5 @@
 from django.http import response
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
@@ -10,10 +11,6 @@ from .serializers import ConversationSerializer, MessageSerializer
 
 
 class ConversationViewSet(viewsets.ViewSet):
-    """
-    A viewset for listing conversations
-    """
-
     permission_classes = [AllowAny]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["conversation_id"]
@@ -21,6 +18,13 @@ class ConversationViewSet(viewsets.ViewSet):
     def list(self, request):
         queryset = Conversation.objects.all()
         serializer = ConversationSerializer(queryset, many=True)
+
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        conversation = get_object_or_404(Conversation, pk=pk)
+
+        serializer = ConversationSerializer(conversation)
 
         return Response(serializer.data)
 
@@ -43,7 +47,7 @@ class MessageViewSet(viewsets.ViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["message_id", "sender_id", "message_body"]
 
-    def list(self, request):
+    def list(self, request, converstaion_pk=None):
         queryset = Message.objects.all()
         serializer = MessageSerializer(queryset, many=True)
 
