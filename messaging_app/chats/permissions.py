@@ -1,4 +1,3 @@
-from chats.models import Conversation
 from django.shortcuts import get_object_or_404
 from rest_framework import permissions
 
@@ -9,6 +8,7 @@ class IsParticipantOfConversation(permissions.BasePermission):
     """
 
     def has_permission(self, request, view):
+        from .models import Conversation
         conversation_pk = view.kwargs.get("conversation_pk")
 
         if not conversation_pk:
@@ -26,6 +26,8 @@ class IsParticipantOfConversation(permissions.BasePermission):
         Check if user is part of the conversation
         """
         from chats.models import Conversation
+
+        from .models import Conversation
 
         conversation_pk = view.kwargs.get("conversation_pk")
         conversation = get_object_or_404(Conversation, pk=conversation_pk)
