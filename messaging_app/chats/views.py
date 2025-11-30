@@ -2,16 +2,18 @@ from django.http import response
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import status
+
+from messaging_app.permissions import IsParticipantOfConversation
 
 from .models import Conversation, Message
 from .serializers import ConversationSerializer, MessageSerializer
 
 
 class ConversationViewSet(viewsets.ViewSet):
-    permission_classes = [AllowAny]
+    #permission_classes = [AllowAny]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["conversation_id"]
 
@@ -43,13 +45,23 @@ class MessageViewSet(viewsets.ViewSet):
     A viewset for listing messages
     """
 
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated, IsParticipantOfConversation]
+
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["message_id", "sender_id", "message_body"]
 
-    def list(self, request, converstaion_pk=None):
+    def list(self, request, conversation_pk=None):
         queryset = Message.objects.all()
         serializer = MessageSerializer(queryset, many=True)
+
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None, conversation_pk=None):
+        message = get_object_or_404(
+            Message,
+            pk=pk,
+        )
+        serializer = MessageSerializer(message)
 
         return Response(serializer.data)
 

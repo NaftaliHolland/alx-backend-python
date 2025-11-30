@@ -25,7 +25,19 @@ SECRET_KEY = 'django-insecure-)h2it6nv-5bhb(r^j^o!07zk&t(0an3rfi8gbbvk8ioxzs%$qo
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'naph.softspin.co.ke',
+    'localhost',
+    '127.0.0.1',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'https://naph.softspin.co.ke',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://naph.softspin.co.ke',
+]
 
 
 # Application definition

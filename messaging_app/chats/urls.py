@@ -8,7 +8,7 @@ router = routers.DefaultRouter()
 
 router.register(r'conversations', ConversationViewSet, basename='conversation')
 
-messages_router = NestedDefaultRouter(router, r'conversations', lookup='converstaion')
+messages_router = NestedDefaultRouter(router, r'conversations', lookup='conversation')
 messages_router.register(r'messages', MessageViewSet, basename='message')
 
 urlpatterns = [
